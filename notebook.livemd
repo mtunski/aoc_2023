@@ -1,0 +1,48 @@
+# Advent of Code 2023
+
+```elixir
+Mix.install([
+  {:memoize, "~> 1.4"},
+  {:tesla, "~> 1.8"}
+])
+
+defmodule Api do
+  use Tesla
+  use Memoize
+
+  @session System.get_env("AOC_SESSION")
+
+  plug(Tesla.Middleware.BaseUrl, "https://adventofcode.com/2023/day/")
+  plug(Tesla.Middleware.Headers, [{"cookie", "session=#{@session}"}])
+
+  defmemo get_input(day) do
+    {:ok, response} = get("#{day}/input")
+    response.body
+  end
+end
+
+:ok
+```
+
+## Task 1
+
+```elixir
+test_input = """
+"""
+
+solve1 = fn input ->
+  nil
+end
+
+_ = solve1.(test_input)
+solve1.(Api.get_input(1)) |> IO.inspect(label: "1.1")
+
+solve2 = fn input ->
+  nil
+end
+
+_ = solve2.(test_input)
+solve2.(Api.get_input(1)) |> IO.inspect(label: "1.2")
+
+:ok
+```
