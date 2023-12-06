@@ -3,8 +3,13 @@
 ```elixir
 Mix.install([
   {:memoize, "~> 1.4"},
-  {:tesla, "~> 1.8"}
+  {:tesla, "~> 1.8"},
+  {:kino, "~> 0.11.3"}
 ])
+
+Kino.configure(inspect: [limit: :infinity, charlists: :as_lists])
+
+alias Kino, as: IO
 
 defmodule Api do
   use Tesla
@@ -194,6 +199,7 @@ solve1 = fn input ->
       |> Enum.any?(&(String.at(parsed_input, &1) in ~w/@ # $ % & * + - = \//))
       |> case do
         true ->
+          # IO.inspect(number)
           {"", [], [String.to_integer(number) | numbers]}
 
         _ ->
@@ -330,4 +336,228 @@ Task4.solve1(Api.get_input(4)) |> IO.inspect(label: "4.1")
 
 30 = Task4.solve2(Task4.test_input())
 Task4.solve2(Api.get_input(4)) |> IO.inspect(label: "4.2")
+```
+
+## Task 5
+
+```elixir
+defmodule Task5 do
+  def test_input,
+    do: """
+    seeds: 79 14 55 13
+
+    seed-to-soil map:
+    50 98 2
+    52 50 48
+
+    soil-to-fertilizer map:
+    0 15 37
+    37 52 2
+    39 0 15
+
+    fertilizer-to-water map:
+    49 53 8
+    0 11 42
+    42 0 7
+    57 7 4
+
+    water-to-light map:
+    88 18 7
+    18 25 70
+
+    light-to-temperature map:
+    45 77 23
+    81 45 19
+    68 64 13
+
+    temperature-to-humidity map:
+    0 69 1
+    1 0 69
+
+    humidity-to-location map:
+    60 56 37
+    56 93 4
+    """
+
+  def solve1(input) do
+    [seeds | map_groups] =
+      input
+      |> String.split("\n\n", trim: true)
+      |> Enum.map(&(Regex.scan(~r/\b\d+\b/, &1) |> Enum.map(fn [a] -> String.to_integer(a) end)))
+
+    map_groups = Enum.map(map_groups, &Enum.chunk_every(&1, 3))
+
+    seeds
+    |> Enum.map(fn seed ->
+      Enum.reduce(map_groups, seed, fn maps, current_range ->
+        Enum.reduce_while(maps, current_range, fn map, current_value ->
+          [dest, src, count] = map
+
+          if src <= current_value and current_value < src + count do
+            {:halt, dest + current_value - src}
+          else
+            {:cont, current_value}
+          end
+        end)
+      end)
+    end)
+    |> Enum.min()
+  end
+
+  def solve2(input) do
+    [seeds | map_groups] =
+      input
+      |> String.split("\n\n", trim: true)
+      |> Enum.map(&(Regex.scan(~r/\b\d+\b/, &1) |> Enum.map(fn [a] -> String.to_integer(a) end)))
+
+    seeds_ranges =
+      Enum.chunk_every(seeds, 2)
+      |> Enum.map(fn [start, count] -> [start, start + count - 1] end)
+
+    # |> Enum.map(&MapSet.new/1)
+
+    map_groups = Enum.map(map_groups, &Enum.chunk_every(&1, 3))
+
+    # seeds_ranges
+    [[79, 92]]
+    # |> Enum.map(&MapSet.new/1)
+    |> Enum.map(fn seeds_range ->
+      Enum.reduce(map_groups, MapSet.new([seeds_range]), fn maps, current_ranges ->
+        IO.inspect(%{maps: maps, ranges: current_ranges}, label: "GROUP")
+
+        # Build next group ranges
+        Enum.reduce(maps, [], fn map, _next_ranges ->
+          IO.inspect(%{map: map, ranges: current_ranges}, label: "MAP")
+
+          # next_ranges =
+          Enum.reduce(current_ranges, current_ranges, fn range, acc ->
+            IO.inspect(%{map: map, range: range}, label: "RANGE")
+            # [range | acc]
+
+            [src_start, dest_start, count] = map
+            src_end = src_start + count - 1
+            [current_start, current_end] = range
+
+            # IO.inspect({range, map}, label: "check if in range")
+            IO.inspect("check if in range")
+
+            if(
+              (current_start >= src_start and current_start < src_end) or
+                (current_end >= src_start and current_end < src_end)
+            ) do
+              next_range = [
+                dest_start + current_start - src_start,
+                dest_start + current_start - src_start
+              ]
+
+              IO.inspect(next_range, label: "in range, remove current & add the mapping")
+
+              acc |> MapSet.delete(range) |> MapSet.put(next_range)
+            else
+              acc
+            end
+          end)
+
+          # next_ranges
+
+          #   # for all current ranges check if fits map - in case of overlap add current range
+          #   Enum.reduce(current_ranges, current_ranges, fn current_range, acc ->
+          #     IO.inspect({current_range, map}, label: "check if in range")
+
+          #     [dest, src, count] = map
+          #     [src_min, src_max] = src_range = [src, src + count - 1]
+          #     [dest_min, _dest_max] = dest_range = [dest, dest + count - 1]
+          #     [current_min, current_max] = current_range
+
+          #     IO.inspect(map, label: "map")
+          #     IO.inspect(current_range, label: "current_range")
+          #     IO.inspect({current_range, src_range, dest_range}, label: "map")
+
+          #     if(
+          #       (current_min >= src_min and current_min < src_max) or
+          #         (current_max >= src_min and current_max < src_max)
+          #     ) do
+          #       IO.inspect(
+          #         "#{current_min}, #{current_max} => #{dest_min + current_min - max(1, src_min)}, #{dest_min + current_max - src_min}",
+          #         label: "IN RANGE"
+          #       )
+
+          #       [
+          #         [dest_min + current_min - max(1, src_min), dest_min + current_max - src_min]
+          #         | acc -- [current_range]
+          #       ]
+          #     else
+          #       acc
+          #     end
+          #   end)
+        end)
+      end)
+    end)
+    |> List.flatten()
+    |> Enum.min()
+  end
+end
+
+# 35 = Task5.solve1(Task5.test_input())
+# Task5.solve1(Api.get_input(5)) |> IO.inspect(label: "5.1")
+
+46 = Task5.solve2(Task5.test_input())
+# Task5.solve2(Api.get_input(5)) |> IO.inspect(label: "5.2")
+```
+
+## Task 6
+
+```elixir
+defmodule Task6 do
+  def test_input,
+    do: """
+    Time:      7  15   30
+    Distance:  9  40  200
+    """
+
+  def solve1(input) do
+    input
+    |> String.split("\n", trim: true)
+    |> Enum.map(
+      &(~r/\b\d+\b/
+        |> Regex.scan(&1)
+        |> Enum.map(fn match -> match |> hd() |> String.to_integer() end))
+    )
+    |> Enum.zip()
+    |> Enum.reduce([], fn {time, record_distance}, winning_counts ->
+      [
+        Enum.reduce(1..(time - 1), 0, fn hold_time, winning_count ->
+          distance = hold_time * (time - hold_time)
+          if distance > record_distance, do: winning_count + 1, else: winning_count
+        end)
+        | winning_counts
+      ]
+    end)
+    |> Enum.product()
+  end
+
+  def solve2(input) do
+    input
+    |> String.split("\n", trim: true)
+    |> Enum.map(
+      &(~r/\b\d+\b/
+        |> Regex.scan(&1)
+        |> Enum.map(fn match -> hd(match) end)
+        |> Enum.join()
+        |> String.to_integer())
+    )
+    |> then(fn [time, record_distance] ->
+      Enum.reduce(1..(time - 1), 0, fn hold_time, winning_count ->
+        distance = hold_time * (time - hold_time)
+        if distance > record_distance, do: winning_count + 1, else: winning_count
+      end)
+    end)
+  end
+end
+
+288 = Task6.solve1(Task6.test_input())
+Task6.solve1(Api.get_input(6)) |> IO.inspect(label: "6.1")
+
+71503 = Task6.solve2(Task6.test_input())
+Task6.solve2(Api.get_input(6)) |> IO.inspect(label: "6.2")
 ```
