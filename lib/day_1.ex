@@ -60,13 +60,15 @@ defmodule Day1 do
   end
 end
 
-142 = Day1.solve_1(Day1.test_input()) |> IO.inspect(label: "1.1 TEST")
-Day1.solve_1(Api.get_input(1)) |> IO.inspect(label: "1.1")
+fn ->
+  142 = Day1.solve_1(Day1.test_input()) |> IO.inspect(label: "1.1 TEST")
+  Day1.solve_1(Api.get_input(1)) |> IO.inspect(label: "1.1")
 
-281 = Day1.solve_2(Day1.test_input_2()) |> IO.inspect(label: "1.2 TEST")
+  281 = Day1.solve_2(Day1.test_input_2()) |> IO.inspect(label: "1.2 TEST")
 
-443 =
-  Day1.solve_2(Day1.test_input_2() <> "\nsevenine" <> "\neighthree")
-  |> IO.inspect(label: "1.2 TEST 2")
+  443 =
+    Day1.solve_2(Day1.test_input_2() <> "\nsevenine" <> "\neighthree")
+    |> IO.inspect(label: "1.2 TEST 2")
 
-Day1.solve_2(Api.get_input(1)) |> IO.inspect(label: "1.2")
+  Day1.solve_2(Api.get_input(1)) |> IO.inspect(label: "1.2")
+end

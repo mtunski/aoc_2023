@@ -43,8 +43,10 @@ defmodule Day2 do
   end
 end
 
-8 = Day2.solve_1(Day2.test_input()) |> IO.inspect(label: "2.1 TEST")
-Day2.solve_1(Api.get_input(2)) |> IO.inspect(label: "2.1")
+fn ->
+  8 = Day2.solve_1(Day2.test_input()) |> IO.inspect(label: "2.1 TEST")
+  Day2.solve_1(Api.get_input(2)) |> IO.inspect(label: "2.1")
 
-2286 = Day2.solve_2(Day2.test_input()) |> IO.inspect(label: "2.2 TEST")
-Day2.solve_2(Api.get_input(2)) |> IO.inspect(label: "2.2")
+  2286 = Day2.solve_2(Day2.test_input()) |> IO.inspect(label: "2.2 TEST")
+  Day2.solve_2(Api.get_input(2)) |> IO.inspect(label: "2.2")
+end

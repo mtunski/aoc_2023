@@ -67,8 +67,10 @@ defmodule Day7 do
   end
 end
 
-6440 = Day7.solve(Day7.test_input(), jokers: false) |> IO.inspect(label: "7.1 TEST")
-Day7.solve(Api.get_input(7), jokers: false) |> IO.inspect(label: "7.1")
+fn ->
+  6440 = Day7.solve(Day7.test_input(), jokers: false) |> IO.inspect(label: "7.1 TEST")
+  Day7.solve(Api.get_input(7), jokers: false) |> IO.inspect(label: "7.1")
 
-5905 = Day7.solve(Day7.test_input(), jokers: true) |> IO.inspect(label: "7.2 TEST")
-Day7.solve(Api.get_input(7), jokers: true) |> IO.inspect(label: "7.2")
+  5905 = Day7.solve(Day7.test_input(), jokers: true) |> IO.inspect(label: "7.2 TEST")
+  Day7.solve(Api.get_input(7), jokers: true) |> IO.inspect(label: "7.2")
+end

@@ -45,8 +45,10 @@ defmodule Day6 do
   end
 end
 
-288 = Day6.solve_1(Day6.test_input()) |> IO.inspect(label: "6.1 TEST")
-Day6.solve_1(Api.get_input(6)) |> IO.inspect(label: "6.1")
+fn ->
+  288 = Day6.solve_1(Day6.test_input()) |> IO.inspect(label: "6.1 TEST")
+  Day6.solve_1(Api.get_input(6)) |> IO.inspect(label: "6.1")
 
-71503 = Day6.solve_2(Day6.test_input()) |> IO.inspect(label: "6.2 TEST")
-Day6.solve_2(Api.get_input(6)) |> IO.inspect(label: "6.2")
+  71503 = Day6.solve_2(Day6.test_input()) |> IO.inspect(label: "6.2 TEST")
+  Day6.solve_2(Api.get_input(6)) |> IO.inspect(label: "6.2")
+end

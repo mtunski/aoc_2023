@@ -36,14 +36,15 @@ defmodule Day8 do
         }
       end)
 
-    go(directions, map, "AAA", 0)
+    go(directions, map, "AAA", 0, version: 1)
   end
 
-  defp go(directions, map, node, step) do
+  defp go(directions, map, node, step, version: version) do
     direction = Enum.at(directions, rem(step, length(directions)))
     next_node = get_in(map, [node, direction])
 
-    if node == "ZZZ", do: step, else: go(directions, map, next_node, step + 1)
+    stop_node_cond = if version == 1, do: node == "ZZZ", else: String.ends_with?(node, "Z")
+    if stop_node_cond, do: step, else: go(directions, map, next_node, step + 1, version: version)
   end
 
   def test_input3,
@@ -75,27 +76,23 @@ defmodule Day8 do
         }
       end)
 
-    start_nodes =
-      map
-      |> Map.keys()
-      |> Enum.filter(&String.ends_with?(&1, "A"))
-
-    go2(directions, map, start_nodes, 0)
-  end
-
-  defp go2(directions, map, nodes, step) do
-    direction = Enum.at(directions, rem(step, length(directions)))
-    next_nodes = Enum.map(nodes, &get_in(map, [&1, direction]))
-
-    if Enum.all?(nodes, &String.ends_with?(&1, "Z")),
-      do: step,
-      else: go2(directions, map, next_nodes, step + 1)
+    map
+    |> Map.keys()
+    |> Enum.filter(&String.ends_with?(&1, "A"))
+    |> Enum.reduce([], fn node, acc ->
+      [go(directions, map, node, 0, version: 2) | acc]
+    end)
+    |> Enum.reduce(1, fn n, lcd ->
+      div(n * lcd, Integer.gcd(n, lcd))
+    end)
   end
 end
 
-2 = Day8.solve_1(Day8.test_input_1()) |> IO.inspect(label: "8.1 TEST")
-6 = Day8.solve_1(Day8.test_input_2()) |> IO.inspect(label: "8.1 TEST")
-Day8.solve_1(Api.get_input(8)) |> IO.inspect(label: "8.1")
+fn ->
+  2 = Day8.solve_1(Day8.test_input_1()) |> IO.inspect(label: "8.1 TEST")
+  6 = Day8.solve_1(Day8.test_input_2()) |> IO.inspect(label: "8.1 TEST")
+  Day8.solve_1(Api.get_input(8)) |> IO.inspect(label: "8.1")
 
-6 = Day8.solve_2(Day8.test_input3()) |> IO.inspect(label: "8.2 TEST")
-Day8.solve_2(Api.get_input(8)) |> IO.inspect(label: "8.2")
+  6 = Day8.solve_2(Day8.test_input3()) |> IO.inspect(label: "8.2 TEST")
+  Day8.solve_2(Api.get_input(8)) |> IO.inspect(label: "8.2")
+end

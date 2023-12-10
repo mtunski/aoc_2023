@@ -124,8 +124,10 @@ defmodule Day5 do
   end
 end
 
-Day5.solve1(Day5.test_input()) |> IO.inspect(label: "TEST 5.1")
-Day5.solve1(Api.get_input(5)) |> IO.inspect(label: "5.1")
+fn ->
+  Day5.solve1(Day5.test_input()) |> IO.inspect(label: "TEST 5.1")
+  Day5.solve1(Api.get_input(5)) |> IO.inspect(label: "5.1")
 
-Day5.solve2(Day5.test_input()) |> IO.inspect(label: "TEST 5.2")
-Day5.solve2(Api.get_input(5)) |> IO.inspect(label: "5.2")
+  Day5.solve2(Day5.test_input()) |> IO.inspect(label: "TEST 5.2")
+  Day5.solve2(Api.get_input(5)) |> IO.inspect(label: "5.2")
+end

@@ -54,8 +54,10 @@ defmodule Day4 do
   end
 end
 
-13 = Day4.solve_1(Day4.test_input()) |> IO.inspect(label: "4.1 TEST")
-Day4.solve_1(Api.get_input(4)) |> IO.inspect(label: "4.1")
+fn ->
+  13 = Day4.solve_1(Day4.test_input()) |> IO.inspect(label: "4.1 TEST")
+  Day4.solve_1(Api.get_input(4)) |> IO.inspect(label: "4.1")
 
-30 = Day4.solve_2(Day4.test_input()) |> IO.inspect(label: "4.2 TEST")
-Day4.solve_2(Api.get_input(4)) |> IO.inspect(label: "4.2")
+  30 = Day4.solve_2(Day4.test_input()) |> IO.inspect(label: "4.2 TEST")
+  Day4.solve_2(Api.get_input(4)) |> IO.inspect(label: "4.2")
+end

@@ -113,8 +113,10 @@ defmodule Day3 do
   end
 end
 
-4361 = Day3.solve_1(Day3.test_input()) |> IO.inspect(label: "3.1 TEST")
-Day3.solve_1(Api.get_input(3)) |> IO.inspect(label: "3.1")
+fn ->
+  4361 = Day3.solve_1(Day3.test_input()) |> IO.inspect(label: "3.1 TEST")
+  Day3.solve_1(Api.get_input(3)) |> IO.inspect(label: "3.1")
 
-467_835 = Day3.solve_2(Day3.test_input()) |> IO.inspect(label: "3.2 TEST")
-Day3.solve_2(Api.get_input(3)) |> IO.inspect(label: "3.2")
+  467_835 = Day3.solve_2(Day3.test_input()) |> IO.inspect(label: "3.2 TEST")
+  Day3.solve_2(Api.get_input(3)) |> IO.inspect(label: "3.2")
+end
