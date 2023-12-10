@@ -1,38 +1,4 @@
-# Advent of Code 2023
-
-```elixir
-Mix.install([
-  {:memoize, "~> 1.4"},
-  {:tesla, "~> 1.8"},
-  {:kino, "~> 0.11.3"}
-])
-
-Kino.configure(inspect: [limit: :infinity, charlists: :as_lists])
-
-alias Kino, as: IO
-
-defmodule Api do
-  use Tesla
-  use Memoize
-
-  @session System.get_env("AOC_SESSION")
-
-  plug(Tesla.Middleware.BaseUrl, "https://adventofcode.com/2023/day/")
-  plug(Tesla.Middleware.Headers, [{"cookie", "session=#{@session}"}])
-
-  defmemo get_input(day) do
-    {:ok, response} = get("#{day}/input")
-    response.body
-  end
-end
-
-:ok
-```
-
-## Task 7
-
-```elixir
-defmodule Task7 do
+defmodule Day7 do
   def test_input,
     do: """
     32T3K 765
@@ -101,9 +67,8 @@ defmodule Task7 do
   end
 end
 
-6440 = Task7.solve(Task7.test_input(), jokers: false)
-Task7.solve(Api.get_input(7), jokers: false) |> IO.inspect(label: "7.1")
+6440 = Day7.solve(Day7.test_input(), jokers: false) |> IO.inspect(label: "7.1 TEST")
+Day7.solve(Api.get_input(7), jokers: false) |> IO.inspect(label: "7.1")
 
-5905 = Task7.solve(Task7.test_input(), jokers: true)
-Task7.solve(Api.get_input(7), jokers: true) |> IO.inspect(label: "7.2")
-```
+5905 = Day7.solve(Day7.test_input(), jokers: true) |> IO.inspect(label: "7.2 TEST")
+Day7.solve(Api.get_input(7), jokers: true) |> IO.inspect(label: "7.2")

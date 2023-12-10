@@ -1,13 +1,25 @@
 {
   "lockfile_version": "1",
   "packages": {
-    "beam.packages.erlangR26.elixir_1_15": {
-      "resolved": "github:NixOS/nixpkgs/75a52265bda7fd25e06e3a67dee3f0354e73243c#beam.packages.erlangR26.elixir_1_15",
-      "source": "nixpkg"
-    },
-    "beam.packages.erlangR26.erlang": {
-      "resolved": "github:NixOS/nixpkgs/75a52265bda7fd25e06e3a67dee3f0354e73243c#beam.packages.erlangR26.erlang",
-      "source": "nixpkg"
+    "elixir@latest": {
+      "last_modified": "2023-12-03T18:08:26Z",
+      "resolved": "github:NixOS/nixpkgs/0c6d8c783336a59f4c59d4a6daed6ab269c4b361#elixir",
+      "source": "devbox-search",
+      "version": "1.15.7",
+      "systems": {
+        "aarch64-darwin": {
+          "store_path": "/nix/store/2f6fyx02cn43jqlgdcmcpa0cfqyanxkc-elixir-1.15.7"
+        },
+        "aarch64-linux": {
+          "store_path": "/nix/store/92kk4y4sndj7yykrg8y4hbfm40w1y3c8-elixir-1.15.7"
+        },
+        "x86_64-darwin": {
+          "store_path": "/nix/store/kyhmr8pnnm1fp3s6bzk8hdszcswh9xg5-elixir-1.15.7"
+        },
+        "x86_64-linux": {
+          "store_path": "/nix/store/nhfjmzfidnmdzmxs67ymina0y5bzkgyb-elixir-1.15.7"
+        }
+      }
     }
   }
 }
